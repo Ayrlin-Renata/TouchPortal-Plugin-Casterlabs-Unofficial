@@ -1,5 +1,5 @@
 """
-Touch Portal Plugin Example
+Ayrlin Casterlabs Unofficial Plugin
 """
 
 import sys
@@ -11,6 +11,8 @@ import TouchPortalAPI as TP
 # Importing our python entry struct so we can get infomations of the plugin without copy and paste
 # So you can change a action id and it will update here.
 import TPPEntry
+
+from CLWebsocket import CLWS
 
 # imports below are optional, to provide argument parsing and logging functionality
 from argparse import ArgumentParser
@@ -34,9 +36,9 @@ except Exception as e:
 # Logging configuration is set up in main().
 g_log = Logger(name = TPPEntry.PLUGIN_ID)
 
-# Settings will be sent by TP upon initial connection to the plugin,
-# as well as whenever they change at runtime. This example uses a
-# shared function to handle both cases. See also onConnect() and onSettingUpdate()
+# # Settings will be sent by TP upon initial connection to the plugin,
+# # as well as whenever they change at runtime. This example uses a
+# # shared function to handle both cases. See also onConnect() and onSettingUpdate()
 def handleSettings(settings, on_connect=False):
     # the settings array from TP can just be flattened to a single dict,
     # from:
@@ -44,10 +46,19 @@ def handleSettings(settings, on_connect=False):
     # to:
     #   { "Setting 1" : "value", "Setting 2" : "value" }
     settings = { list(settings[i])[0] : list(settings[i].values())[0] for i in range(len(settings)) }
+    CLWS.folWidgetId = settings.get(TPPEntry.TP_PLUGIN_SETTINGS["FollowId"]["name"]) #follower
+    CLWS.subWidgetId = settings.get(TPPEntry.TP_PLUGIN_SETTINGS["SubscribeId"]["name"]) #subscriber
+    CLWS.radWidgetId = settings.get(TPPEntry.TP_PLUGIN_SETTINGS["RaidId"]["name"]) #raid
+    CLWS.authorization = settings.get(TPPEntry.TP_PLUGIN_SETTINGS["Authorization"]["name"]) #authCLWS.
+    print(CLWS.folWidgetId)
+    print(CLWS.subWidgetId)
+    print(CLWS.radWidgetId)
+    print(CLWS.authorization)
     # now we can just get settings, and their values, by name
-    if (value := settings.get(TPPEntry.TP_PLUGIN_SETTINGS['example']['name'])) is not None:
-        # this example doesn't do anything useful with the setting, just saves it
-        TPPEntry.TP_PLUGIN_SETTINGS['example']['value'] = value
+    # if (value := settings.get(TPPEntry.TP_PLUGIN_SETTINGS['example']['name'])) is not None:
+    #     # this example doesn't do anything useful with the setting, just saves it
+    #     TPPEntry.TP_PLUGIN_SETTINGS['example']['value'] = value
+    
 
 
 ## TP Client event handler callbacks
@@ -55,10 +66,12 @@ def handleSettings(settings, on_connect=False):
 # Initial connection handler
 @TPClient.on(TP.TYPES.onConnect)
 def onConnect(data):
+    global TPClient
     g_log.info(f"Connected to TP v{data.get('tpVersionString', '?')}, plugin v{data.get('pluginVersion', '?')}.")
     g_log.debug(f"Connection: {data}")
     if settings := data.get('settings'):
         handleSettings(settings, True)
+    CLWS.summon(TPClient)
 
 # Settings handler
 @TPClient.on(TP.TYPES.onSettingUpdate)
@@ -175,6 +188,7 @@ def main():
     finally:
         # Make sure TP Client is stopped, this will do nothing if it is already disconnected.
         TPClient.disconnect()
+        CLWS.disconnect()
 
     # TP disconnected, clean up.
     del TPClient

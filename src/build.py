@@ -31,7 +31,7 @@ PLUGIN_ENTRY_INDENT = 2
 PLUGIN_ENTRY_INDENT: This is used for generating new entry.tp with indentations using python entry struct. default is 2 indents. 
 """
 
-PLUGIN_ROOT = "TPExamplePlugin"
+PLUGIN_ROOT = "TouchPortalCasterlabsUnofficial"
 """ This is the root folder name that will be inside of .tpp """
 
 PLUGIN_ICON = r""
@@ -72,6 +72,11 @@ Any additional arguments to be passed to Pyinstaller. Optional.
 ADDITIONAL_PYINSTALLER_ARGS = [
     "--log-level=WARN"
 ]
+
+"""
+Any additional arguments to be passed to Pyinstaller. Optional.
+"""
+ADDITIONAL_TPPSDK_ARGS = []
 
 if __name__ == "__main__":
     tppbuild.runBuild()

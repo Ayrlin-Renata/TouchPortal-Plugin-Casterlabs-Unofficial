@@ -12,7 +12,7 @@ TP_PLUGIN_INFO = {
     "name": "Casterlabs Unofficial",
     "id": PLUGIN_ID,
     # Startup command, with default logging options read from configuration file (see main() for details)
-    "plugin_start_cmd": "%TP_PLUGIN_FOLDER%TouchPortalCasterlabsUnofficial\\tpcasterlabs-unofficial.exe @tpcasterlabs-unofficial_config.txt",
+    "plugin_start_cmd": "%TP_PLUGIN_FOLDER%TouchPortalCasterlabsUnofficial\\tpcasterlabs-unofficial.exe",
     "configuration": {
         "colorDark": "#25274c",
         "colorLight": "#707ab5"

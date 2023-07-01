@@ -138,5 +138,8 @@ class CLWS:
         
     async def multiConnect(clwsF,clwsS,clwsR):
         tasks = [clwsF.connect(), clwsS.connect(), clwsR.connect()]
-        await asyncio.gather(*tasks)
+        try:
+            await asyncio.gather(*tasks)
+        except Exception:
+            pass
         return

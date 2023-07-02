@@ -2,6 +2,10 @@
 ---
 A plugin to make follows, subs, and raids trigger TP states. 
 
+## Don't actually use this!
+apperently it only works on test events and every websocket would trigger on all event calls for the real thing. 
+go see my other project CaffeinePortal if I finish it for a like, reasonable version
+
 ## How to use
 1. download
 2. import
